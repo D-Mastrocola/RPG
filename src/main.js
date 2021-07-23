@@ -11,37 +11,28 @@ function draw() {
 
 document.addEventListener("keydown", function (e) {
   let key = e.keyCode;
-  if (key === 87) {
-    //Keydown W
-    player.inputs.w = true;
-  } else if (key === 65) {
-    //Keydown W
-    player.inputs.a = true;
-  } else if (key === 83) {
-    //Keydown W
-    player.inputs.s = true;
-  } else if (key === 68) {
-    //Keydown W
-    player.inputs.d = true;
+  //        w            a           s              d
+  if (key === 87 || key === 65 || key === 83 || key === 68) {
+    for (let i = 0; i < player.inputs.length; i++) {
+      if (player.inputs[i] === key) return;
+    }
+    player.inputs.unshift(key);
+    console.log(player.inputs);
   } else if (key === 32) {
-    //Keyup space
+    //Keydown space
     player.attack();
   }
 });
 document.addEventListener("keyup", function (e) {
   let key = e.keyCode;
-  if (key === 87) {
-    //Keyup W
-    player.inputs.w = false;
-  } else if (key === 65) {
-    //Keyup W
-    player.inputs.a = false;
-  } else if (key === 83) {
-    //Keyup W
-    player.inputs.s = false;
-  } else if (key === 68) {
-    //Keyup W
-    player.inputs.d = false;
+  //        w            a           s              d
+  if (key === 87 || key === 65 || key === 83 || key === 68) {
+    for (let i = 0; i < player.inputs.length; i++) {
+      if (player.inputs[i] === key) {
+        player.inputs.splice(i, 1);
+        console.log(player.inputs);
+      }
+    }
   } else if (key === 32) {
     //Keyup space
     player.canAttack = true;

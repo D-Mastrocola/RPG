@@ -14,8 +14,11 @@ class swordAttack {
     if (currentTime - this.createdTime < this.length) {
       this.pos.add(playerVel);
       this.draw();
-      player.isAttacking = true;
-      player.canAttack = false;
+    }
+    else {
+      player.isAttacking = false;
+      player.canAttack = true;
+      player.attackObj = '';
     }
   }
 }
