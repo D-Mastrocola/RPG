@@ -5,26 +5,24 @@ class Player {
     this.moveSpeed = 4;
     this.dir = createVector(0, 1);
     this.inputs = [];
-    this.size = 30;
+    this.size = 32;
     this.canAttack = true;
     this.isAttacking = false;
     this.objects = [];
     this.attackObj = "";
-    this.sprites = {
-      up: loadImage("./src/objects/player/sprites/up.png"),
-      left: loadImage("./src/objects/player/sprites/left.png"),
-      right: loadImage("./src/objects/player/sprites/right.png"),
-      down: loadImage("./src/objects/player/sprites/down.png"),
-      upLeft: loadImage("./src/objects/player/sprites/upDiagonalLeft.png"),
-      upRight: loadImage("./src/objects/player/sprites/upDiagonalRight.png"),
-      downLeft: loadImage("./src/objects/player/sprites/downDiagonalLeft.png"),
-      downRight: loadImage(
-        "./src/objects/player/sprites/downDiagonalRight.png"
-      ),
+    this.spriteFrame = 0;
+    this.lastFrameChange = millis();
+    this.sprite = loadImage("./src/objects/player/sprites/player_movement.png");
+    this.spriteIndexes = {
+      up: [3, 0, 1],
+      left: [2, 0, 1],
+      right: [1, 0, 1],
+      down: [0, 0, 1],
     };
-    this.currentSprite = this.sprites.right;
+    this.currentSprite = this.spriteIndexes.right;
   }
   attack() {
+    this.setVel();
     this.isAttacking = true;
     if (this.canAttack) {
       this.canAttack = false;
@@ -38,17 +36,17 @@ class Player {
   }
   setSprite() {
     if (this.vel.y < 0) {
-      this.currentSprite = this.sprites.up;
-      if (this.vel.x > 0) this.currentSprite = this.sprites.upRight;
-      if (this.vel.x < 0) this.currentSprite = this.sprites.upLeft;
+      this.currentSprite = this.spriteIndexes.up;
+      this.dir.set(0, -1);
     } else if (this.vel.y > 0) {
-      this.currentSprite = this.sprites.down;
-      if (this.vel.x > 0) this.currentSprite = this.sprites.downRight;
-      if (this.vel.x < 0) this.currentSprite = this.sprites.downLeft;
+      this.currentSprite = this.spriteIndexes.down;
+      this.dir.set(0, 1);
     } else if (this.vel.x > 0) {
-      this.currentSprite = this.sprites.right;
+      this.currentSprite = this.spriteIndexes.right;
+      this.dir.set(1, 0);
     } else if (this.vel.x < 0) {
-      this.currentSprite = this.sprites.left;
+      this.currentSprite = this.spriteIndexes.left;
+      this.dir.set(-1, 0);
     }
   }
   setVel() {
@@ -67,12 +65,19 @@ class Player {
     fill(255);
     noStroke();
     //rect(this.pos.x, this.pos.y, this.size, this.size);
-    image(this.currentSprite, this.pos.x, this.pos.y);
+    image(
+      this.sprite,
+      this.pos.x,
+      this.pos.y,
+      this.size,
+      this.size,
+      this.currentSprite[1] * this.size + this.spriteFrame * this.size,
+      this.currentSprite[0] * this.size,
+      this.size,
+      this.size
+    );
   }
   update() {
-    if (this.vel.mag() !== 0) {
-      this.dir = this.vel.copy().normalize();
-    }
     this.setVel();
     this.pos.add(this.vel);
     this.draw();
@@ -83,5 +88,14 @@ class Player {
     if (this.attackObj !== "") {
       this.attackObj.update(this.vel);
     }
+    if (millis() - this.lastFrameChange > 125) {
+      this.lastFrameChange = millis();
+      this.spriteFrame++;
+    }
+
+    if (this.spriteFrame > this.currentSprite[2] || this.vel.mag() === 0)
+      this.spriteFrame = 0;
+
+    console.log(this.spriteFrame + "\n" + this.currentSprite);
   }
 }
