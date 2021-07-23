@@ -1,5 +1,7 @@
 class Player {
   constructor(x, y) {
+    this.maxHealth  = 2.1;
+    this.health = this.maxHealth;
     this.pos = createVector(x, y);
     this.vel = createVector(0, 0);
     this.moveSpeed = 4;
@@ -76,6 +78,13 @@ class Player {
       this.size,
       this.size
     );
+
+    //draw health
+    fill(255, 255, 0)
+    for(let i = 0; i < this.health; i++) {
+      rect(22 * i + 22, 20, 15, 20);
+    }
+    rect(10 * (floor(this.health) + 1), 20, 15 * (this.health - floor(this.health)), 20);
   }
   update() {
     this.setVel();
