@@ -1,6 +1,6 @@
 class Player {
   constructor(x, y) {
-    this.maxHealth  = 2.1;
+    this.maxHealth = 3;
     this.health = this.maxHealth;
     this.pos = createVector(x, y);
     this.vel = createVector(0, 0);
@@ -24,7 +24,7 @@ class Player {
     this.currentSprite = this.spriteIndexes.right;
   }
   attack() {
-    this.setVel();
+    this.vel.set(0, 0);
     this.isAttacking = true;
     if (this.canAttack) {
       this.canAttack = false;
@@ -52,16 +52,19 @@ class Player {
     }
   }
   setVel() {
-    this.vel.set(0, 0);
-    let lastKey = this.inputs[0];
+    if (!this.isAttacking) {
+      this.vel.set(0, 0);
+      let lastKey = this.inputs[0];
 
-    if (lastKey === 87) this.vel.y = -1;
-    if (lastKey === 65) this.vel.x = -1;
-    if (lastKey === 83) this.vel.y = 1;
-    if (lastKey === 68) this.vel.x = 1;
+      if (lastKey === 87) this.vel.y = -1;
+      if (lastKey === 65) this.vel.x = -1;
+      if (lastKey === 83) this.vel.y = 1;
+      if (lastKey === 68) this.vel.x = 1;
 
-    this.vel.setMag(this.moveSpeed);
-    if (!this.isAttacking) this.setSprite();
+      this.vel.setMag(this.moveSpeed);
+      if (!this.isAttacking) this.setSprite();
+    }
+
   }
   draw() {
     fill(255);
@@ -80,11 +83,13 @@ class Player {
     );
 
     //draw health
-    fill(255, 255, 0)
-    for(let i = 0; i < this.health; i++) {
-      rect(22 * i + 22, 20, 15, 20);
+    fill(255, 0, 0)
+    stroke(255)
+    strokeWeight(2)
+    for (let i = 0; i < floor(this.health); i++) {
+      rect(22 * i + 22, 20, 20, 20);
     }
-    rect(10 * (floor(this.health) + 1), 20, 15 * (this.health - floor(this.health)), 20);
+    rect(22 * (ceil(this.health)), 20, 15 * (this.health - floor(this.health)), 20);
   }
   update() {
     this.setVel();

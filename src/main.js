@@ -1,7 +1,7 @@
 let player;
 function setup() {
   createCanvas(600, 600);
-  player = new Player(20, 20);
+  player = new Player(20, 100);
   background(51);
 }
 function draw() {
