@@ -1,12 +1,15 @@
 let player;
+let rupee;
 function setup() {
   createCanvas(600, 600);
   player = new Player(20, 100);
+  rupee = new Rupee(200, 200, 1);
   background(51);
 }
 function draw() {
   background(51);
   player.update();
+  rupee.update();
 }
 
 document.addEventListener("keydown", function (e) {
