@@ -17,7 +17,6 @@ document.addEventListener("keydown", function (e) {
       if (player.inputs[i] === key) return;
     }
     player.inputs.unshift(key);
-    console.log(player.inputs);
   } else if (key === 32) {
     //Keydown space
     player.attack();
@@ -30,7 +29,6 @@ document.addEventListener("keyup", function (e) {
     for (let i = 0; i < player.inputs.length; i++) {
       if (player.inputs[i] === key) {
         player.inputs.splice(i, 1);
-        console.log(player.inputs);
       }
     }
   } else if (key === 32) {

@@ -3,12 +3,12 @@ class swordAttack {
     this.pos = createVector(x, y);
     this.size = 30;
     this.createdTime = millis();
-    this.length = 300;
+    this.length = 500;
   }
   draw() {
-    fill(100, 100, 100);
+    /*fill(100, 100, 100);
     noStroke();
-    rect(this.pos.x, this.pos.y, this.size, this.size);
+    rect(this.pos.x, this.pos.y, this.size, this.size);*/
   }
   update(playerVel) {
     let currentTime = millis();
